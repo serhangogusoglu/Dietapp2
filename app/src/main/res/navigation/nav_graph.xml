@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.diet_app.LoginFragment"
+        android:name="com.example.diet_app.LoginFragment.LoginFragment"
         android:label="Login" />
 
     <fragment
