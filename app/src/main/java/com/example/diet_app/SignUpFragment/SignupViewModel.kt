@@ -3,8 +3,11 @@ package com.example.diet_app.SignUpFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.diet_app.data.repository.UserRepository
+import kotlinx.coroutines.launch
 
-class SignupViewModel : ViewModel() {
+class SignupViewModel(private val userRepositroy: UserRepository) : ViewModel() {
 
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
@@ -39,6 +42,19 @@ class SignupViewModel : ViewModel() {
             return
         }
 
+        viewModelScope.launch {
+            try {
+                val userId = userRepositroy.registerUser(currentEmail, currentPassword)
+                if(userId > 0) {
+                    _registrationSuccess.value = true
+                } else {
+                    _errorMessage.value = "Kayıt işlemi başarısız oldu."
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = "Veritabanı hatası: ${e.message}"
+            }
+        }
+
         // başarılı kayıt simülasyon
         _registrationSuccess.value = true
     }
@@ -56,5 +72,17 @@ class SignupViewModel : ViewModel() {
         _navigateBack.value = false
         _navigateToLogin.value = false
         _errorMessage.value = null
+    }
+
+    companion object {
+        fun Factory(userRepositroy: UserRepository) = object : androidx.lifecycle.ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if(modelClass.isAssignableFrom(SignupViewModel::class.java)) {
+                    @Suppress("UNCHECKED_CAST")
+                    return SignupViewModel(userRepositroy) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
     }
 }

@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.diet_app.R
+import com.example.diet_app.data.database.AppDatabase
+import com.example.diet_app.data.repository.UserRepository
 import com.example.diet_app.databinding.FragmentSignUpBinding
 
 class SignUpFragment : Fragment(){
@@ -18,7 +20,11 @@ class SignUpFragment : Fragment(){
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SignupViewModel by viewModels()
+    private val viewModel: SignupViewModel by viewModels {
+        val database = AppDatabase.getDatabase(requireContext())
+        val repository = UserRepository(database.userDao())
+        SignupViewModel.Companion.Factory(repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
