@@ -22,7 +22,15 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.diet_app.LoginFragment.LoginFragment"
-        android:label="Login" />
+        android:label="Login"
+        tools:layout="@layout/fragment_login"
+        >
+    <action
+        android:id="@+id/action_loginFragment_to_welcomeFragment"
+        app:destination="@id/welcomeFragment"
+        app:popUpTo="@id/landingFragment"
+        app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/signupFragment"
@@ -35,4 +43,21 @@
         app:popUpToInclusive="true" />
     </fragment>
 
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.diet_app.WelcomeFragment.WelcomeFragment"
+        android:label="Welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_InfoFragment"
+            app:destination="@id/infoFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.diet_app.InfoFragment.InfoFragment"
+        android:label="Info"
+        tools:layout="@layout/fragment_info"
+        />
 </navigation>

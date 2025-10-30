@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.diet_app.R
 import com.example.diet_app.databinding.FragmentLoginBinding
 import com.example.diet_app.data.database.AppDatabase
 import com.example.diet_app.data.repository.UserRepository
@@ -85,6 +86,7 @@ class LoginFragment : Fragment() {
         viewModel.loginSuccess.observe(viewLifecycleOwner) {success ->
             if(success) {
                 Toast.makeText(context, "Giriş Başarılı", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
                 viewModel.operationComplete()
             }
         }
