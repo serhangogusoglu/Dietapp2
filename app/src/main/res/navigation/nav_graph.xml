@@ -57,7 +57,16 @@
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.example.diet_app.InfoFragment.InfoFragment"
-        android:label="Info"
-        tools:layout="@layout/fragment_info"
-        />
+        android:label="Your Info"
+        tools:layout="@layout/fragment_info">
+        <action
+            android:id="@+id/action_infoFragment_to_infoSecondFragment"
+            app:destination="@+id/infoSecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/infoSecondFragment"
+        android:name="com.example.diet_app.InfoSecondFragment.InfoSecondFragment"
+        android:label="Your Info (Step 2/2)"
+        tools:layout="@layout/fragment_info_second" />
 </navigation>

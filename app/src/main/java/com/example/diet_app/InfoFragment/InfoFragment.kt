@@ -1,60 +1,156 @@
 package com.example.diet_app.InfoFragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import com.example.diet_app.InfoFragment.BottomSheet.PurposeSelectionBottomSheet
+import com.example.diet_app.InfoFragment.BottomSheet.PurposeSelectionListener
 import com.example.diet_app.R
+import com.example.diet_app.databinding.FragmentInfoBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class InfoFragment : Fragment(), PurposeSelectionListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [InfoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class InfoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentInfoBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    // ViewModel'i oluştururken varsayılan factory kullanılır
+    private val viewModel: InfoViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentInfoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Ülke kodu, bayraksız simülasyon olarak korunmuştur.
+        setupCountryCodeDropdown()
+        setupInputBinding()
+        setupListeners()
+        setupObservers()
+    }
+
+    private fun setupCountryCodeDropdown() {
+        // Simülasyon: Bayraksız ülke kodları listesi
+        val countryCodes = listOf("+46", "+90", "+1", "+44", "+49", "+33", "+81", "+86")
+
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            countryCodes
+        )
+
+        // Bu yapı, AutoCompleteTextView'i bulmak için önceki XML yapınızla uyumludur
+        val countryCodeInput = binding.layoutPhoneNumber.findViewById<AutoCompleteTextView>(R.id.input_country_code)
+        countryCodeInput.setAdapter(adapter)
+
+        countryCodeInput.setOnClickListener {
+            countryCodeInput.showDropDown()
+        }
+
+        countryCodeInput.setOnItemClickListener { parent, view, position, id ->
+            val selectedCode = parent.getItemAtPosition(position) as String
+            // Seçilen kodu ViewModel'e kaydetme mantığı buraya gelir
+            // (Opsiyonel olarak ViewModel'de bir LiveData tanımlanmalıdır)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false)
+    private fun setupInputBinding() {
+        fun bindTextWatcher(editText: EditText, liveData: MutableLiveData<String>) {
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    liveData.value = s.toString()
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            })
+        }
+
+        bindTextWatcher(binding.inputName, viewModel.name)
+        bindTextWatcher(binding.inputNickname, viewModel.nickname)
+        bindTextWatcher(binding.inputEmail, viewModel.email)
+        bindTextWatcher(binding.inputPhone, viewModel.phoneNumber)
+        bindTextWatcher(binding.inputCountry , viewModel.country)
+
+        // ❌ KALDIRILDI: Bu simülasyon kaldırıldı, artık BottomSheet açıldığında değer atanacak
+        // binding.inputPurpose.setOnClickListener { ... }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment InfoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            InfoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setupListeners() {
+        binding.buttonNext.setOnClickListener {
+            viewModel.onNextClicked()
+        }
+
+        binding.imageBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // 'You're here for*' alanına tıklama olayını koruduk
+        binding.inputPurpose.setOnClickListener {
+            showPurposeSelectionBottomSheet()
+        }
+    }
+
+    private fun showPurposeSelectionBottomSheet() {
+        val bottomSheet = PurposeSelectionBottomSheet()
+        bottomSheet.purposeSelectionListener = this
+        bottomSheet.show(parentFragmentManager, "PurposeSelectionTag")
+    }
+
+    // PurposeSelectionListener arayüzünden gelen geri bildirim
+    override fun onPurposeSelected(purpose: String) {
+        // ✅ ViewModel'de amaç güncellenir. Bu, isNextButtonEnabled'i tetikler.
+        binding.inputPurpose.text = purpose
+        viewModel.purpose.value = purpose
+
+        // Seçim yapıldıktan sonra TextView'ın rengini ayarla
+        binding.inputPurpose.setTextColor(resources.getColor(android.R.color.black))
+    }
+
+    private fun setupObservers() {
+        // Hata mesajlarını gözlemle
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            if (message != null) {
+                binding.textError.text = message
+                binding.textError.visibility = View.VISIBLE
+            } else {
+                binding.textError.visibility = View.GONE
             }
+        }
+
+        // ✅ ZORUNLULUK KONTROLÜ: Next butonunun etkinliğini gözlemle
+        viewModel.isNextButtonEnabled.observe(viewLifecycleOwner) { isEnabled ->
+            binding.buttonNext.isEnabled = isEnabled
+            // İsteğe bağlı: Butonun rengini de değiştirebilirsiniz (Örn: alpha veya backgroundTint)
+        }
+
+        // Sonraki adıma geçişi gözlemle
+        viewModel.navigateToNextStep.observe(viewLifecycleOwner) { navigate ->
+            if (navigate) {
+                // InfoStepTwoFragment'a geçiş aksiyonu
+                findNavController().navigate(R.id.action_infoFragment_to_infoSecondFragment)
+                viewModel.navigationComplete()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
