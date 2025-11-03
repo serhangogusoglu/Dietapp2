@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" >
+
+        <TextView
+            android:id="@+id/tect_profile_picture_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile Picture"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X Cancel"
+            android:textSize="16sp"
+            android:textColor="#505050"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RadioGroup
+        android:id="@+id/radio_group_profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/radio_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose from available avatars"
+            android:textSize="18sp"
+            android:paddingVertical="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioButton
+            android:id="@+id/radio_library"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose from library"
+            android:textSize="18sp"
+            android:paddingVertical="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioButton
+            android:id="@+id/radio_take_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take photo"
+            android:textSize="18sp"
+            android:paddingVertical="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioButton
+            android:id="@+id/radio_remove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove current picture"
+            android:textSize="18sp"
+            android:paddingVertical="12dp"
+            android:layout_marginBottom="8dp" />
+
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_ok"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="OK"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="#9FBDBF"
+        app:cornerRadius="8dp"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>
