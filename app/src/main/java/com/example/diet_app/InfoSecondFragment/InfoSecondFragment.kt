@@ -18,6 +18,8 @@ import com.example.diet_app.DatePickerFragment
 import com.example.diet_app.DateSelectionListener
 import com.example.diet_app.InfoSecondFragment.AvatarSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.AvatarSelectionListener
+import com.example.diet_app.InfoSecondFragment.GenderSelectionBottomSheet
+import com.example.diet_app.InfoSecondFragment.GenderSelectionListener
 import com.example.diet_app.InfoSecondFragment.PictureOption
 import com.example.diet_app.InfoSecondFragment.ProfilePictureSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.ProfilePictureSelectionListener
@@ -26,7 +28,7 @@ import com.example.diet_app.databinding.FragmentInfoSecondBinding
 import com.example.diet_app.ui.info_second.InfoSecondViewModel
 
 class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSelectionListener,
-    DateSelectionListener {
+    DateSelectionListener, GenderSelectionListener {
 
     private var _binding: FragmentInfoSecondBinding? = null
     private val binding get() = _binding!!
@@ -132,10 +134,24 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
         bindTextWatcher(binding.inputWeight, viewModel.weight)
 
         binding.inputWeekMovement.setOnClickListener { /* TODO */ }
-        binding.inputGender.setOnClickListener { /* TODO */ }
+        binding.inputGender.setOnClickListener {
+         showGenderSelectionSheet()
+        }
         binding.inputBirthDate.setOnClickListener {
         showDatePicker()
         }
+    }
+
+    private fun showGenderSelectionSheet() {
+        val bottomsheet = GenderSelectionBottomSheet()
+        bottomsheet.selectionListener = this
+        bottomsheet.show(parentFragmentManager, "GenderSelection")
+    }
+
+    override fun onGenderSelected(gender: String) {
+        binding.inputGender.text = gender
+
+        viewModel.gender.value = gender
     }
 
     private fun showDatePicker(){
