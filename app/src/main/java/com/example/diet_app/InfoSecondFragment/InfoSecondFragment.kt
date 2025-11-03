@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import com.example.diet_app.DatePickerFragment
+import com.example.diet_app.DateSelectionListener
 import com.example.diet_app.InfoSecondFragment.AvatarSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.AvatarSelectionListener
 import com.example.diet_app.InfoSecondFragment.PictureOption
@@ -23,7 +25,8 @@ import com.example.diet_app.R
 import com.example.diet_app.databinding.FragmentInfoSecondBinding
 import com.example.diet_app.ui.info_second.InfoSecondViewModel
 
-class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSelectionListener {
+class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSelectionListener,
+    DateSelectionListener {
 
     private var _binding: FragmentInfoSecondBinding? = null
     private val binding get() = _binding!!
@@ -130,7 +133,13 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
 
         binding.inputWeekMovement.setOnClickListener { /* TODO */ }
         binding.inputGender.setOnClickListener { /* TODO */ }
-        binding.inputBirthDate.setOnClickListener { /* TODO: DatePicker */ }
+        binding.inputBirthDate.setOnClickListener {
+        showDatePicker()
+        }
+    }
+
+    private fun showDatePicker(){
+        DatePickerFragment.show(this, this)
     }
 
     private fun setupListeners() {
@@ -208,5 +217,12 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDateSelected(dateString: String) {
+        binding.inputBirthDate.text = dateString
+
+        // ViewModel'e kaydet (Form geçerliliği için gereklidir)
+        viewModel.birthDate.value = dateString
     }
 }
