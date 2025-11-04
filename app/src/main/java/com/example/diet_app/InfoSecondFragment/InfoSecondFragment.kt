@@ -20,6 +20,8 @@ import com.example.diet_app.InfoSecondFragment.AvatarSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.AvatarSelectionListener
 import com.example.diet_app.InfoSecondFragment.GenderSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.GenderSelectionListener
+import com.example.diet_app.InfoSecondFragment.MovementSelectionBottomSheet
+import com.example.diet_app.InfoSecondFragment.MovementSelectionListener
 import com.example.diet_app.InfoSecondFragment.PictureOption
 import com.example.diet_app.InfoSecondFragment.ProfilePictureSelectionBottomSheet
 import com.example.diet_app.InfoSecondFragment.ProfilePictureSelectionListener
@@ -28,7 +30,7 @@ import com.example.diet_app.databinding.FragmentInfoSecondBinding
 import com.example.diet_app.ui.info_second.InfoSecondViewModel
 
 class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSelectionListener,
-    DateSelectionListener, GenderSelectionListener {
+    DateSelectionListener, GenderSelectionListener, MovementSelectionListener {
 
     private var _binding: FragmentInfoSecondBinding? = null
     private val binding get() = _binding!!
@@ -133,13 +135,27 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
         bindTextWatcher(binding.inputHeight, viewModel.height)
         bindTextWatcher(binding.inputWeight, viewModel.weight)
 
-        binding.inputWeekMovement.setOnClickListener { /* TODO */ }
+        binding.inputWeekMovement.setOnClickListener {
+        showMovementSelectionSheet()
+        }
         binding.inputGender.setOnClickListener {
          showGenderSelectionSheet()
         }
         binding.inputBirthDate.setOnClickListener {
         showDatePicker()
         }
+    }
+
+    private fun showMovementSelectionSheet(){
+        val bottomSheet = MovementSelectionBottomSheet()
+        bottomSheet.selectionListener = this
+        bottomSheet.show(parentFragmentManager, "MovementSelection")
+    }
+
+    override fun onMovementSelected(movementLevel: String) {
+       binding.inputWeekMovement.text = movementLevel
+
+        viewModel.weekMovement.value = movementLevel
     }
 
     private fun showGenderSelectionSheet() {

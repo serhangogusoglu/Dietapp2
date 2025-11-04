@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" >
+
+        <TextView
+            android:id="@+id/text_movement_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weekly Movement Level"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/text_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X Cancel"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#505050"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_movement_title"
+            app:layout_constraintBottom_toBottomOf="@+id/text_movement_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button_sedentary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sedentary (Desk job)"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp"
+        app:strokeColor = "#DDDDDD"
+        app:strokeWidth = "1dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <Button
+        android:id="@+id/button_lightly_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lightly Active (Exercise 1-3 days a week)"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp"
+        app:strokeColor="#DDDDDD"
+        app:strokeWidth="1dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <Button
+        android:id="@+id/button_moderately_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Moderately Active (Exercise 3-5 days a week)"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp"
+        app:strokeColor="#DDDDDD"
+        app:strokeWidth="1dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <Button
+        android:id="@+id/button_very_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Very Active (Strong exercise every day)"
+        android:gravity="center_horizontal"
+        android:paddingStart="16dp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        app:strokeColor="#DDDDDD"
+        app:strokeWidth="1dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+</LinearLayout>
