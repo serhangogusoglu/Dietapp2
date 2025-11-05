@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
@@ -36,7 +37,7 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
     private val binding get() = _binding!!
 
     // ViewModel'i doğru paketten çağır
-    private val viewModel: InfoSecondViewModel by viewModels()
+    private val viewModel: InfoSecondViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
