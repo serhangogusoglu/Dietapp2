@@ -9,14 +9,12 @@
         android:id="@+id/landingFragment"
         android:name="com.example.diet_app.LandingFragment.LandingFragment"
         android:label="Landing" >
-
         <action
             android:id="@+id/action_landingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_landingFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
-
     </fragment>
 
     <fragment
@@ -25,22 +23,22 @@
         android:label="Login"
         tools:layout="@layout/fragment_login"
         >
-    <action
-        android:id="@+id/action_loginFragment_to_welcomeFragment"
-        app:destination="@id/welcomeFragment"
-        app:popUpTo="@id/landingFragment"
-        app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_loginFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/landingFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.example.diet_app.SignUpFragment.SignUpFragment"
         android:label="Sign Up" >
-    <action
-        android:id="@+id/action_signupFragment_to_loginFragment"
-        app:destination="@id/loginFragment"
-        app:popUpTo="@id/loginFragment"
-        app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signupFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -68,5 +66,65 @@
         android:id="@+id/infoSecondFragment"
         android:name="com.example.diet_app.info_second.InfoSecondFragment"
         android:label="Your Info (Step 2/2)"
-        tools:layout="@layout/fragment_info_second" />
+        tools:layout="@layout/fragment_info_second">
+        <action
+            android:id="@+id/action_infoSecondFragment_to_calculationFragment"
+            app:destination="@id/calculationFragment" />
+        <action
+            android:id="@+id/action_infoSecondFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/calculationFragment"
+        android:name="com.example.diet_app.CalculationFragment.CalculationFragment"
+        android:label="Calculating..."
+        tools:layout="@layout/fragment_calculation" >
+
+        <action
+            android:id="@+id/action_calculationFragment_to_bmiResultFragment"
+            app:destination="@+id/bmiResultFragment"
+            app:popUpTo="@id/infoSecondFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="bmiValue"
+            app:argType="float"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue="Calculating..." />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/bmiResultFragment"
+        android:name="com.example.diet_app.BmiFragment.BmiResultFragment"
+        android:label="BMI Result"
+        tools:layout="@layout/fragment_bmi_result_data">
+        <argument
+            android:name="bmiValue"
+            app:argType="float" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_bmiResultFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <!-- ... (bmiResultFragment tanımının bittiği yer) ... -->
+
+    <!-- ✅ EKSİK FRAGMENT: HomeFragment tanımı buraya eklendi -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.diet_app.HomeFragment.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+
 </navigation>

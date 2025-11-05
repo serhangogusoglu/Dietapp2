@@ -130,19 +130,27 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
 
     private fun setupInputBinding() {
         // Text Watchers (Bir önceki versiyonla aynı)
-        fun bindTextWatcher(editText: TextView, liveData: MutableLiveData<String>) { /* ... */ }
+        fun bindTextWatcher(editText: TextView, liveData: MutableLiveData<String>) {
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    liveData.value = s.toString()
+                }
+            })
+        }
 
         bindTextWatcher(binding.inputHeight, viewModel.height)
         bindTextWatcher(binding.inputWeight, viewModel.weight)
 
         binding.inputWeekMovement.setOnClickListener {
-        showMovementSelectionSheet()
+            showMovementSelectionSheet()
         }
         binding.inputGender.setOnClickListener {
-         showGenderSelectionSheet()
+            showGenderSelectionSheet()
         }
         binding.inputBirthDate.setOnClickListener {
-        showDatePicker()
+            showDatePicker()
         }
     }
 
@@ -153,7 +161,7 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
     }
 
     override fun onMovementSelected(movementLevel: String) {
-       binding.inputWeekMovement.text = movementLevel
+        binding.inputWeekMovement.text = movementLevel
 
         viewModel.weekMovement.value = movementLevel
     }
@@ -187,9 +195,9 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
             showProfilePictureSelectionSheet()
         }
         // Eğer TextView de tıklanabilirse:
-        // binding.root.findViewById<TextView>(R.id.text_add_profile_picture).setOnClickListener {
-        //     showProfilePictureSelectionSheet()
-        // }
+        binding.textAddProfilePicture.setOnClickListener {
+            showProfilePictureSelectionSheet()
+        }
     }
 
     private fun showProfilePictureSelectionSheet() {
@@ -209,7 +217,6 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
 
     private fun setupObservers() {
         // Hata ve Buton gözlemcileri (Bir önceki versiyonla aynı)
-        // ...
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
             if (message != null) {
@@ -237,7 +244,56 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
             }
         }
 
-        // Ana sayfaya geçişi gözlemle
+        // ✅ YENİ: BMI Hesaplama ve Gecikmeli Navigasyon Gözlemcisi
+        viewModel.navigateToBmiResult.observe(viewLifecycleOwner) { resultData ->
+            resultData?.let {
+                when (it.targetFragment) {
+                    com.example.diet_app.ui.info_second.TargetFragment.CALCULATION -> {
+                        // 1. Calculation Fragment'a yönlendir
+                        // NOT: Navigasyon Grafiğinizde (nav_graph.xml)
+                        // action_infoSecondFragment_to_calculationFragment tanımlı olmalıdır.
+
+                        // Örnek Navigasyon kodu:
+                         val action = InfoSecondFragmentDirections.actionInfoSecondFragmentToCalculationFragment(
+                             bmiValue = it.bmi.toFloat(),
+                             category = it.category
+                         )
+                         findNavController().navigate(action)
+
+                        // Şimdilik sadece Toast gösterelim ve butonu değiştirelim (Gerçek uygulamada CalculationFragment'a geçmelisiniz)
+                        Toast.makeText(context, "BMI Hesaplaması Başlatıldı...", Toast.LENGTH_SHORT).show()
+
+                        // Kullanıcıya bir geri bildirim vermek için butonu devre dışı bırakıp metnini değiştiriyoruz
+                        binding.buttonNext.text = "Calculating..."
+                        binding.buttonNext.isEnabled = false
+                        binding.buttonNext.alpha = 1.0f
+                    }
+                    com.example.diet_app.ui.info_second.TargetFragment.BMI_RESULT -> {
+                        // 2. BMI Sonuç Fragment'a yönlendir
+                        // NOT: Navigasyon Grafiğinizde (nav_graph.xml) bu aksiyonun olması gerekir
+
+                        // Örnek Navigasyon kodu (Doğrudan buradan):
+                        // val action = InfoSecondFragmentDirections.actionInfoSecondFragmentToBmiResultFragment(
+                        //     bmi = it.bmi.toFloat(),
+                        //     category = it.category
+                        // )
+                        // findNavController().navigate(action)
+
+                        // Şimdilik sadece Toast gösterelim
+                        Toast.makeText(context, "Sonuç: BMI ${it.bmi} (${it.category})", Toast.LENGTH_LONG).show()
+
+                        // Navigasyon sonrası temizlik ve buton geri dönüşü
+                        viewModel.navigationToBmiResultComplete()
+                        binding.buttonNext.text = "Calculate BMI and Weight"
+                        binding.buttonNext.isEnabled = true
+                        binding.buttonNext.alpha = 1.0f
+                    }
+                }
+            }
+        }
+
+
+        // Ana sayfaya geçişi gözlemle (Sadece Skip butonu için geçerli olabilir)
         viewModel.navigateToHome.observe(viewLifecycleOwner) { navigate ->
             if (navigate) {
                 // ...

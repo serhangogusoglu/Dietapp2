@@ -83,6 +83,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ellipse"
+                    android:clickable="true"
+                    android:focusable="true"
                     tools:ignore="ContentDescription" />
                 <TextView
                     android:id="@+id/text_add_profile_picture"
@@ -90,8 +92,9 @@
                     android:layout_height="wrap_content"
                     android:text="Add Profile Picture"
                     android:layout_marginTop="8dp"
-                    android:textColor="#505050"/>
-            </LinearLayout>
+                    android:textColor="#505050"
+                    android:clickable="true"
+                    android:focusable="true"/> </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
