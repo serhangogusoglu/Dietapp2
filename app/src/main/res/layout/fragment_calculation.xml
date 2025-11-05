@@ -7,6 +7,20 @@
     android:background="@android:color/white"
     tools:context=".CalculationFragment.CalculationFragment">
 
+    <TextView
+        android:id="@+id/yourCalculation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Calculation"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#505050"
+        android:paddingStart="12dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
