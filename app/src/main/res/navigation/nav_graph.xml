@@ -96,6 +96,12 @@
             android:name="category"
             app:argType="string"
             android:defaultValue="Calculating..." />
+        <argument
+            android:name="height"
+            app:argType="string" />
+        <argument
+            android:name="weight"
+            app:argType="string" />
 
     </fragment>
 
@@ -109,6 +115,13 @@
             app:argType="float" />
         <argument
             android:name="category"
+            app:argType="string" />
+
+        <argument
+            android:name="height"
+            app:argType="string" />
+        <argument
+            android:name="weight"
             app:argType="string" />
 
         <action

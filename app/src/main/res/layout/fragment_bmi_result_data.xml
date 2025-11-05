@@ -4,81 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:padding="24dp"
     tools:context=".BmiFragment.BmiResultFragment">
 
     <TextView
-        android:id="@+id/text_result_title"
+        android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Your BMI Result"
-        android:textColor="#666666"
-        android:textSize="28sp"
+        android:text="Your Calculation"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/text_bmi_value_label"
+        android:id="@+id/label_height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="BMI Score:"
+        android:text="Your Height"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_result_title" />
+        app:layout_constraintTop_toBottomOf="@id/text_title" />
 
     <TextView
-        android:id="@+id/text_bmi_value"
-        android:layout_width="wrap_content"
+        android:id="@+id/text_your_height"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:gravity="end"
         android:textColor="@color/black"
-        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_bmi_value_label"
-        app:layout_constraintStart_toEndOf="@id/text_bmi_value_label"
-        tools:text="22.5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/label_height"
+        tools:text="176 cm" />
 
     <TextView
-        android:id="@+id/text_category_label"
+        android:id="@+id/label_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Your Weight"
+        android:textColor="@color/black"
         android:layout_marginTop="16dp"
-        android:text="Category:"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_bmi_value_label" />
+        app:layout_constraintTop_toBottomOf="@id/label_height" />
 
     <TextView
-        android:id="@+id/text_category"
+        android:id="@+id/text_your_weight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/label_weight"
+        tools:text="90 kg" />
+
+    <TextView
+        android:id="@+id/label_bmi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:text="Your BMI"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_category_label"
-        app:layout_constraintStart_toEndOf="@id/text_category_label"
-        tools:text="Normal Weight" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_weight" />
 
+    <TextView
+        android:id="@+id/text_your_bmi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textColor="#3D9B51"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/label_bmi"
+        tools:text="29.1 (Overweight)" />
+
+    <TextView
+        android:id="@+id/label_overweight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Overweight"
+        android:textColor="#0C4650"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_bmi" />
+
+    <TextView
+        android:id="@+id/text_target_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We need your target weight and time"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_overweight" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_continue"
+        android:id="@+id/button_your_target"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:text="Continue to Home"
+        android:layout_marginTop="8dp"
+        android:text="Your Target"
         android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#9FBDBF"
         app:cornerRadius="8dp"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="#9FBDBF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/text_target_prompt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

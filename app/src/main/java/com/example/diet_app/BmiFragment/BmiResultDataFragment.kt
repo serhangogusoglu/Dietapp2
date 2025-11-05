@@ -28,12 +28,15 @@ class BmiResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.textYourHeight.text = args.height + " " + "cm" // Ya da ViewModel'den birim alın
+        binding.textYourWeight.text = args.weight + " " + "kg"
+
         // Verileri ekrana yaz
-        binding.textBmiValue.text = args.bmiValue.toString()
-        binding.textCategory.text = args.category
+        binding.textYourBmi.text = args.bmiValue.toString()
+        binding.labelOverweight.text = args.category
 
         // Devam butonuna tıklanınca ana sayfaya yönlendir
-        binding.buttonContinue.setOnClickListener {
+        binding.buttonYourTarget.setOnClickListener {
             // NOT: Navigation Graph'ta action_bmiResultFragment_to_homeFragment tanımlı
             val action = BmiResultFragmentDirections.actionBmiResultFragmentToHomeFragment()
             findNavController().navigate(action)

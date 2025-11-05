@@ -257,7 +257,9 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
                         // Örnek Navigasyon kodu:
                          val action = InfoSecondFragmentDirections.actionInfoSecondFragmentToCalculationFragment(
                              bmiValue = it.bmi.toFloat(),
-                             category = it.category
+                             category = it.category,
+                             height = viewModel.height.value ?: "",
+                             weight = viewModel.weight.value ?: ""
                          )
                          findNavController().navigate(action)
 

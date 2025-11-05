@@ -176,7 +176,7 @@
                 android:id="@+id/input_purpose"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="You're here for *"
+                android:hint="You're here for *"
                 android:gravity="center_vertical"
                 android:background="@drawable/input_background_shape"
                 android:padding="16dp"
