@@ -28,7 +28,7 @@ class BmiResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textYourHeight.text = args.height + " " + "cm" // Ya da ViewModel'den birim alın
+        binding.textYourHeight.text = args.height + " " + "cm"
         binding.textYourWeight.text = args.weight + " " + "kg"
 
         // Verileri ekrana yaz
@@ -40,6 +40,10 @@ class BmiResultFragment : Fragment() {
             // NOT: Navigation Graph'ta action_bmiResultFragment_to_homeFragment tanımlı
             val action = BmiResultFragmentDirections.actionBmiResultFragmentToHomeFragment()
             findNavController().navigate(action)
+        }
+
+        binding.imageBack.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
