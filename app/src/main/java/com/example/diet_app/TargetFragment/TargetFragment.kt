@@ -1,60 +1,132 @@
 package com.example.diet_app.TargetFragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.diet_app.R
+import com.example.diet_app.databinding.FragmentTargetBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TargetFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TargetFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private var _binding: FragmentTargetBinding? = null
+    private val binding get() = _binding!!
+
+    private val args: TargetFragmentArgs by navArgs()
+
+    private val viewModel: TargetViewModel by viewModels {
+        TargetViewModelFactory(args.height, args.weight)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_target, container, false)
+        _binding = FragmentTargetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TargetFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TargetFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupInputBinding()
+        setupListeners()
+        setupObservers()
+    }
+
+    private fun setupInputBinding() {
+        //viewmodeldeki livedatayi input alanlarına bagla
+        fun bindTextWatcher(editText: TextView, liveData: MutableLiveData<String>) {
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    liveData.value = s.toString()
                 }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            })
+        }
+
+        bindTextWatcher(binding.inputTargetWeight, viewModel.targetWeight)
+        bindTextWatcher(binding.inputDurationDays, viewModel.durationDays)
+    }
+
+    private fun setupListeners() {
+        binding.imageBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.unitTargetKg.setOnClickListener { viewModel.onUnitChanged("kg") }
+        binding.unitTargetLbs.setOnClickListener { viewModel.onUnitChanged("lbs") }
+
+        binding.buttonLetsSee.setOnClickListener {
+            viewModel.onNextClicked()
+        }
+    }
+
+    private fun setupObservers() {
+        // kilo birimi gözlemcisi (ui güncelleme)
+        viewModel.weightUnit.observe(viewLifecycleOwner) {unit ->
+            updateUnitUI(binding.unitTargetKg, binding.unitTargetLbs, unit, "kg", "lbs")
+        }
+
+        viewModel.isNextButtonEnabled.observe(viewLifecycleOwner) { isEnabled ->
+            binding.buttonLetsSee.isEnabled = isEnabled
+            binding.buttonLetsSee.alpha = if(isEnabled) 1.0f else 0.5f
+        }
+
+        viewModel.healthyRangeText.observe(viewLifecycleOwner) {text ->
+            binding.textHealthyRange.text = text
+        }
+
+        viewModel.suggestionText.observe(viewLifecycleOwner) { text->
+            binding.textSuggestion.text = text
+        }
+
+        viewModel.navigateToHome.observe(viewLifecycleOwner) {navigate ->
+            if(navigate) {
+                val action = TargetFragmentDirections.actionTargetFragmentToHomeFragment()
+                findNavController().navigate(action)
+                viewModel.navigationComplete()
             }
+        }
+    }
+
+    private fun updateUnitUI(
+        selectedView: TextView, unselectedView: TextView, currentUnit: String, selectedTag: String, unselectedTag: String
+    ) {
+        val context = requireContext()
+        val primaryColor = ContextCompat.getColor(context, R.color.black)
+        val secondaryColor = ContextCompat.getColor(context, R.color.white)
+
+        if (currentUnit == selectedTag) {
+            selectedView.setBackgroundResource(R.drawable.unit_selector_selected)
+            selectedView.setTextColor(secondaryColor)
+            unselectedView.setBackgroundResource(R.drawable.unit_selector_unselected)
+            unselectedView.setTextColor(primaryColor)
+        } else {
+            unselectedView.setBackgroundResource(R.drawable.unit_selector_selected)
+            unselectedView.setTextColor(secondaryColor)
+            selectedView.setBackgroundResource(R.drawable.unit_selector_unselected)
+            selectedView.setTextColor(primaryColor)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

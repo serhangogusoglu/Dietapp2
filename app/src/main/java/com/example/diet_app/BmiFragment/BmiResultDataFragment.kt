@@ -9,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.diet_app.databinding.FragmentBmiResultDataBinding
 
-class BmiResultFragment : Fragment() {
+class BmiResultDataFragment : Fragment() {
 
     private var _binding: FragmentBmiResultDataBinding? = null
     private val binding get() = _binding!!
 
     // Safe Args ile gelen verileri al
-    private val args: BmiResultFragmentArgs by navArgs()
+    private val args: BmiResultDataFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,14 +36,22 @@ class BmiResultFragment : Fragment() {
         binding.labelOverweight.text = args.category
 
         // Devam butonuna tıklanınca ana sayfaya yönlendir
-        binding.buttonYourTarget.setOnClickListener {
-            // NOT: Navigation Graph'ta action_bmiResultFragment_to_homeFragment tanımlı
-            val action = BmiResultFragmentDirections.actionBmiResultFragmentToHomeFragment()
-            findNavController().navigate(action)
-        }
+      //  binding.buttonYourTarget.setOnClickListener {
+      //      // NOT: Navigation Graph'ta action_bmiResultFragment_to_homeFragment tanımlı
+      //      val action = BmiResultDataFragmentDirections.actionBmiResultFragmentToHomeFragment()
+      //      findNavController().navigate(action)
+      //  }
 
         binding.imageBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.buttonYourTarget.setOnClickListener {
+            val action = BmiResultDataFragmentDirections.actionBmiResultFragmentToTargetFragment(
+                height = args.height,
+                weight = args.weight
+            )
+            findNavController().navigate(action)
         }
     }
 

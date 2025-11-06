@@ -107,7 +107,7 @@
 
     <fragment
         android:id="@+id/bmiResultFragment"
-        android:name="com.example.diet_app.BmiFragment.BmiResultFragment"
+        android:name="com.example.diet_app.BmiFragment.BmiResultDataFragment"
         android:label="BMI Result"
         tools:layout="@layout/fragment_bmi_result_data">
         <argument
@@ -123,6 +123,11 @@
         <argument
             android:name="weight"
             app:argType="string" />
+        <action
+            android:id="@+id/action_bmiResultFragment_to_targetFragment"
+            app:destination="@+id/targetFragment"
+            app:popUpTo="@id/infoSecondFragment"
+            app:popUpToInclusive="true" />
 
         <action
             android:id="@+id/action_bmiResultFragment_to_homeFragment"
@@ -131,13 +136,29 @@
             app:popUpToInclusive="true"/>
     </fragment>
 
-    <!-- ... (bmiResultFragment tanımının bittiği yer) ... -->
-
-    <!-- ✅ EKSİK FRAGMENT: HomeFragment tanımı buraya eklendi -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.diet_app.HomeFragment.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/targetFragment"
+        android:name="com.example.diet_app.TargetFragment.TargetFragment"
+        android:label="Your Target Weight"
+        tools:layout="@layout/fragment_target" >
+
+        <argument
+            android:name="height"
+            app:argType="string" />
+        <argument
+            android:name="weight"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_targetFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 </navigation>
