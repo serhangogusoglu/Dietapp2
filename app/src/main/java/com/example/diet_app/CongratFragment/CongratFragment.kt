@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.diet_app.R
+import androidx.navigation.fragment.navArgs
 import com.example.diet_app.databinding.FragmentCongratBinding
 
 class CongratFragment : Fragment() {
@@ -18,6 +19,8 @@ class CongratFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CongratViewModel by viewModels()
+
+    private val args: CongratFragmentArgs by navArgs()
 
     private val handler = Handler(Looper.getMainLooper())
     private val navigateRunnable = Runnable {
@@ -44,7 +47,13 @@ class CongratFragment : Fragment() {
     private fun setupObservers() {
         viewModel.navigateToHome.observe(viewLifecycleOwner) { navigate ->
             if(navigate) {
-                val action = CongratFragmentDirections.actionCongratFragmentToHomeFragment()
+                val action = CongratFragmentDirections.actionCongratFragmentToCalorieResultFragment(
+                    height = args.height,
+                    weight = args.weight,
+                    age = args.age,
+                    gender = args.gender,
+                    activityLevel = args.activityLevel
+                )
                 findNavController().navigate(action)
 
                 viewModel.navigationComplete()

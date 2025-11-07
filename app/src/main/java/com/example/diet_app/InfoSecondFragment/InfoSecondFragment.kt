@@ -259,7 +259,10 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
                              bmiValue = it.bmi.toFloat(),
                              category = it.category,
                              height = viewModel.height.value ?: "",
-                             weight = viewModel.weight.value ?: ""
+                             weight = viewModel.weight.value ?: "",
+                             age = viewModel.age.value ?: 0,
+                             gender = viewModel.gender.value ?: "",
+                             activityLevel = viewModel.weekMovement.value ?: ""
                          )
                          findNavController().navigate(action)
 
@@ -312,8 +315,9 @@ class InfoSecondFragment : Fragment(), ProfilePictureSelectionListener, AvatarSe
 
     override fun onDateSelected(dateString: String) {
         binding.inputBirthDate.text = dateString
-
-        // ViewModel'e kaydet (Form geçerliliği için gereklidir)
         viewModel.birthDate.value = dateString
+
+        // ✅ Doğum tarihinden yaş hesapla
+        viewModel.calculateAgeFromBirthDate(dateString)
     }
 }

@@ -98,7 +98,13 @@ class TargetFragment : Fragment() {
 
         viewModel.navigateToHome.observe(viewLifecycleOwner) {navigate ->
             if(navigate) {
-                val action = TargetFragmentDirections.actionTargetFragmentToCongratFragment()
+                val action = TargetFragmentDirections.actionTargetFragmentToCongratFragment(
+                    height = args.height,
+                    weight = args.weight,
+                    age = args.age , // ✅ EKLENDİ
+                    gender = args.gender, // ✅ EKLENDİ
+                    activityLevel = args.activityLevel // ✅ EKLENDİ
+                )
                 findNavController().navigate(action)
                 viewModel.navigationComplete()
             }

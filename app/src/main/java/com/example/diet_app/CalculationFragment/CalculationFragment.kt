@@ -43,7 +43,10 @@ class CalculationFragment : Fragment() {
                         bmiValue = it.bmi.toFloat(),
                         category = it.category,
                         height = args.height,
-                        weight = args.weight
+                        weight = args.weight,
+                        age = args.age,
+                        gender = args.gender,
+                        activityLevel = args.activityLevel
                     )
                     findNavController().navigate(action)
 

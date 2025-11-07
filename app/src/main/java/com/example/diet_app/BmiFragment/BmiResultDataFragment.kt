@@ -49,7 +49,10 @@ class BmiResultDataFragment : Fragment() {
         binding.buttonYourTarget.setOnClickListener {
             val action = BmiResultDataFragmentDirections.actionBmiResultFragmentToTargetFragment(
                 height = args.height,
-                weight = args.weight
+                weight = args.weight,
+                age = args.age,
+                gender = args.gender,
+                activityLevel = args.activityLevel
             )
             findNavController().navigate(action)
         }

@@ -102,6 +102,9 @@
         <argument
             android:name="weight"
             app:argType="string" />
+        <argument android:name="age" app:argType="integer" />
+        <argument android:name="gender" app:argType="string" />
+        <argument android:name="activityLevel" app:argType="string" />
 
     </fragment>
 
@@ -123,6 +126,9 @@
         <argument
             android:name="weight"
             app:argType="string" />
+        <argument android:name="age" app:argType="integer" />
+        <argument android:name="gender" app:argType="string" />
+        <argument android:name="activityLevel" app:argType="string" />
         <action
             android:id="@+id/action_bmiResultFragment_to_targetFragment"
             app:destination="@+id/targetFragment"
@@ -148,12 +154,11 @@
         android:label="Your Target Weight"
         tools:layout="@layout/fragment_target" >
 
-        <argument
-            android:name="height"
-            app:argType="string" />
-        <argument
-            android:name="weight"
-            app:argType="string" />
+        <argument android:name="height" app:argType="string" />
+        <argument android:name="weight" app:argType="string" />
+        <argument android:name="age" app:argType="integer" />
+        <argument android:name="gender" app:argType="string" />
+        <argument android:name="activityLevel" app:argType="string" />
         <action
             android:id="@+id/action_targetFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -164,6 +169,9 @@
             app:destination="@+id/congratFragment"
             app:popUpTo="@id/welcomeFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_targetFragment_to_calorieResultFragment"
+            app:destination="@+id/calorieResultFragment" />
     </fragment>
 
     <fragment
@@ -172,11 +180,38 @@
         android:label="Congratulations!"
         tools:layout="@layout/fragment_congrat">
 
+        <argument android:name="height" app:argType="string" />
+        <argument android:name="weight" app:argType="string" />
+        <argument android:name="age" app:argType="integer" />
+        <argument android:name="gender" app:argType="string" />
+        <argument android:name="activityLevel" app:argType="string" />
+
         <action
             android:id="@+id/action_congratFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/welcomeFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_congratFragment_to_calorieResultFragment"
+            app:destination="@+id/calorieResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calorieResultFragment"
+        android:name="com.example.diet_app.CalorieResultFragment.CalorieResultFragment"
+        android:label="CalorieResultFragment"
+        tools:layout="@layout/fragment_calorie_result" >
+
+        <argument android:name="height" app:argType="string" />
+        <argument android:name="weight" app:argType="string" />
+        <argument android:name="age" app:argType="integer" />
+        <argument android:name="gender" app:argType="string" />
+        <argument android:name="activityLevel" app:argType="string" />
+        <action
+            android:id="@+id/action_calorieResultFragment_to_homeFragment"
+            app:destination="@+id/homeFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
