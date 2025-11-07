@@ -169,6 +169,8 @@
         android:layout_marginTop="40dp"
         android:text="Let's see!"
         android:textColor="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         android:textSize="18sp"
         app:cornerRadius="8dp"
         android:backgroundTint="#9FBDBF"

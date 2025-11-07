@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.map
+import androidx.lifecycle.MediatorLiveData
 import kotlin.math.pow
 
 class TargetViewModelFactory(private val height: String, private val weight: String) : ViewModelProvider.Factory {
@@ -32,10 +32,6 @@ class TargetViewModel(private val initialHeight: String, private val initialWeig
     private val _suggestionText = MutableLiveData<String>()
     val suggestionText: LiveData<String> = _suggestionText
 
-    val isNextButtonEnabled: LiveData<Boolean> = targetWeight.map { target ->
-        target.isNotBlank() && durationDays.value?.isNotBlank() ?: false
-    }
-
     private val _navigateToHome = MutableLiveData<Boolean>()
     val navigateToHome: LiveData<Boolean> = _navigateToHome
 
@@ -44,51 +40,59 @@ class TargetViewModel(private val initialHeight: String, private val initialWeig
         generateSuggestion()
     }
 
-    // Hesaplamalar
+    val isNextButtonEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        // 1. targetWeight değiştiğinde kontrol et
+        addSource(targetWeight) {
+            value = isInputsValid()
+        }
+        // 2. durationDays değiştiğinde kontrol et
+        addSource(durationDays) {
+            value = isInputsValid()
+        }
+        // Başlangıç değerini ayarla
+        value = isInputsValid()
+    }
 
+    private fun isInputsValid(): Boolean {
+        // Her iki alanın da boş olup olmadığını kontrol eder
+        val targetValid = targetWeight.value?.isNotBlank() ?: false
+        val durationValid = durationDays.value?.isNotBlank() ?: false
+        return targetValid && durationValid
+    }
+
+    // Hesaplamalar (Aynı Kaldı)
     private fun calculateHealthyWeightRange() {
+        // ... (Kod aynı kaldı)
         val heightCm = initialHeight.toFloatOrNull() ?: 170f
         val hInMeters = heightCm / 100f
-
-        // sağlıklı bmi aralığı 18.5 - 24.9
         val minHealthyWeight = 18.5f * hInMeters.pow(2)
         val maxHealthyWeight = 24.9f * hInMeters.pow(2)
-
         _healthyRangeText.value = String.format("%.1f - %.1f kg", minHealthyWeight, maxHealthyWeight)
     }
 
     private fun generateSuggestion() {
+        // ... (Kod aynı kaldı)
         val currenctWeight = initialWeight.toFloatOrNull() ?: 70f
         val heightCm = initialHeight.toFloatOrNull() ?: 170f
         val hInMeters = heightCm / 100f
-
-        // Kilo verme önerisi, hedef BMI'yi 22.0 kabul edelim
         val targetBmiWeight = 22.0f * hInMeters.pow(2)
         val weightToLose = currenctWeight - targetBmiWeight
 
-        // Fazla kilolu değilse hedef korumadır, burada sadece kilo verme senaryosunu ele alalım.
         if(weightToLose > 0) {
-            // Öneri süresi: Yaklaşık haftada 0.5 kg (örnek), 0.5 * 7 = 3.5 kg/ay
-            // Toplam ay = weightToLose / 2
             val suggestedDays = (weightToLose / 1.5f) * 7
-
             _suggestionText.value = "To loose ${String.format("%.1f", weightToLose)} kg in ${suggestedDays.toInt()} days."
         } else {
-            // Kullanıcı normal kiloda veya zayıfsa, hedefi kilo korumadır.
             _suggestionText.value = "Your weight is healthy. You can set a maintenance goal."
         }
     }
 
     fun onUnitChanged(unit:String) {
         _weightUnit.value = unit
-        // NOT: Kilo birimi değiştiğinde hedef kilonun dönüştürülmesi gerekir. Bu adım şimdilik atlanmıştır.
     }
 
     fun onNextClicked() {
         if(isNextButtonEnabled.value == true) {
-            // hedef kilonun ve sürenin islenmesi
             Log.d("TargetViewModel", "Hedef Kilo: ${targetWeight.value} ${weightUnit.value}, Süre: ${durationDays.value} gün")
-
             _navigateToHome.value = true
         }
     }

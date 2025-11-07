@@ -47,7 +47,7 @@ class TargetFragment : Fragment() {
 
     private fun setupInputBinding() {
         //viewmodeldeki livedatayi input alanlarına bagla
-        fun bindTextWatcher(editText: TextView, liveData: MutableLiveData<String>) {
+        fun bindTextWatcher(editText: EditText, liveData: MutableLiveData<String>) {
             editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     liveData.value = s.toString()
@@ -98,7 +98,7 @@ class TargetFragment : Fragment() {
 
         viewModel.navigateToHome.observe(viewLifecycleOwner) {navigate ->
             if(navigate) {
-                val action = TargetFragmentDirections.actionTargetFragmentToHomeFragment()
+                val action = TargetFragmentDirections.actionTargetFragmentToCongratFragment()
                 findNavController().navigate(action)
                 viewModel.navigationComplete()
             }
